@@ -22,6 +22,7 @@ public class Dipendenti {
     private String name;
     private String surname;
     private String email;
+    private String avatar_url;
 
     public Dipendenti() {
     }

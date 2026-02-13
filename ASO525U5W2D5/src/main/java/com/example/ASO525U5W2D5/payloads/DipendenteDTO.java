@@ -14,5 +14,7 @@ public record DipendenteDTO(
         String surname,
         @NotBlank(message = "email is a required field")
         @Email(message = "wrong format")
-        String email) {
+        String email,
+        String avatar_url) {
+
 }

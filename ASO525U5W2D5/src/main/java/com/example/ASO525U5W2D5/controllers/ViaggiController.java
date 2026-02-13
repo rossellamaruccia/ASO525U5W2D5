@@ -39,6 +39,7 @@ public class ViaggiController {
     }
 
     @PutMapping("/{viaggioId}")
+    @ResponseStatus(HttpStatus.ACCEPTED)
     public Viaggi findByIdAndUpdate(@PathVariable long viaggioId, @RequestBody ViaggioDTO payload) {
         return this.viaggiService.findByIdAndUpdate(viaggioId, payload);
     }

@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -37,7 +38,12 @@ public class DipendentiController {
         }
 
     }
-    
+
+    @PatchMapping("/{dipendenteId}/avatar")
+    public void uploadImage(@RequestParam("profile_pic") MultipartFile file, @PathVariable long dipendenteId) {
+        this.dipendentiService.uploadAvatar(file, dipendenteId);
+    }
+
     @DeleteMapping("/{userId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void findByIdAndDelete(@PathVariable long userId) {
