@@ -32,4 +32,13 @@ public class ViaggiService {
             return (Viaggi) optional.get();
         } else throw new NotFoundException(viaggioId);
     }
+
+    public Viaggi findByIdAndUpdate(long viaggioId, ViaggioDTO payload) {
+        if (viaggiRepository.findById(viaggioId).isPresent()) {
+            Viaggi viaggio = (Viaggi) viaggiRepository.findById(viaggioId).get();
+            viaggio.setStatoViaggio(payload.statoViaggio());
+            viaggiRepository.save(viaggio);
+            return viaggio;
+        } else throw new NotFoundException(viaggioId);
+    }
 }

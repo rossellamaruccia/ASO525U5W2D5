@@ -37,4 +37,9 @@ public class ViaggiController {
             return this.viaggiService.save(payload);
         }
     }
+
+    @PutMapping("/{viaggioId}")
+    public Viaggi findByIdAndUpdate(@PathVariable long viaggioId, @RequestBody ViaggioDTO payload) {
+        return this.viaggiService.findByIdAndUpdate(viaggioId, payload);
+    }
 }
