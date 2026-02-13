@@ -6,15 +6,12 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @Entity
 @Table(name = "viaggi")
 @Getter
 @Setter
 public class Viaggi {
-    @OneToMany(mappedBy = "viaggio")
-    List<Prenotazioni> prenotazioni;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Setter(AccessLevel.NONE)
