@@ -17,8 +17,12 @@ import java.util.Optional;
 @Service
 @Slf4j
 public class ViaggiService {
-    @Autowired
     private ViaggiRepository viaggiRepository;
+
+    @Autowired
+    public ViaggiService(ViaggiRepository viaggiRepository) {
+        this.viaggiRepository = viaggiRepository;
+    }
 
     public Viaggi save(ViaggioDTO payload) {
         //TODO:controlli su viaggi?
@@ -39,7 +43,7 @@ public class ViaggiService {
 
     public Viaggi findByIdAndUpdate(long viaggioId, ViaggioDTO payload) {
         if (viaggiRepository.findById(viaggioId).isPresent()) {
-            Viaggi viaggio = (Viaggi) viaggiRepository.findById(viaggioId).get();
+            Viaggi viaggio = viaggiRepository.findById(viaggioId).get();
             viaggio.setStatoViaggio(payload.statoViaggio());
             viaggiRepository.save(viaggio);
             return viaggio;

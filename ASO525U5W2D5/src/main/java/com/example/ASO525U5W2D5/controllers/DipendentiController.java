@@ -43,7 +43,7 @@ public class DipendentiController {
     @GetMapping
     public Page<Dipendenti> getAll(@RequestParam(defaultValue = "0") int page,
                                    @RequestParam(defaultValue = "10") int size,
-                                   @RequestParam(defaultValue = "data") String orderBy,
+                                   @RequestParam(defaultValue = "surname") String orderBy,
                                    @RequestParam(defaultValue = "asc") String sortCriteria) {
         return this.dipendentiService.findAll(page, size, orderBy, sortCriteria);
     }
