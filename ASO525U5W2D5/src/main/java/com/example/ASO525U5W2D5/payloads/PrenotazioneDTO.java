@@ -11,5 +11,3 @@ public record PrenotazioneDTO(
         String preferenze
 ) {
 }
-
-//nel payload attribuisco l'id degli oggetti, nel service devo fare i get

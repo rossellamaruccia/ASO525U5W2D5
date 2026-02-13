@@ -14,7 +14,6 @@ import java.util.Optional;
 @Service
 @Slf4j
 public class DipendentiService {
-
     private DipendentiRepository dipendentiRepository;
 
     @Autowired
@@ -36,12 +35,21 @@ public class DipendentiService {
         return newDipendente;
     }
 
+
     public void findByIdAndDelete(long dipendenteId) {
         Optional optional = dipendentiRepository.findById(dipendenteId);
         if (optional.isPresent()) {
             Dipendenti found = (Dipendenti) optional.get();
             dipendentiRepository.delete(found);
             log.info("Dipendente cancellato");
+        } else throw new NotFoundException(dipendenteId);
+    }
+
+    public Dipendenti findById(long dipendenteId) {
+        Optional optional = dipendentiRepository.findById(dipendenteId);
+        if (optional.isPresent()) {
+            Dipendenti found = (Dipendenti) optional.get();
+            return found;
         } else throw new NotFoundException(dipendenteId);
     }
 }

@@ -23,7 +23,6 @@ public class ViaggiController {
         this.viaggiService = viaggiService;
     }
 
-    // 1. POST http://localhost:3001/viaggi (+ Payload)
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Viaggi createViaggi(@RequestBody @Validated ViaggioDTO payload, BindingResult validationResult) {

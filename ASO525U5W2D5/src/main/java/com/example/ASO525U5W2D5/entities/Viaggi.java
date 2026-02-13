@@ -18,6 +18,7 @@ public class Viaggi {
     private long id;
     private String destinazione;
     private LocalDate data;
+    @Enumerated(EnumType.STRING)
     private StatoViaggio statoViaggio;
 
     public Viaggi() {

@@ -1,9 +1,9 @@
 package com.example.ASO525U5W2D5.controllers;
 
-import com.example.ASO525U5W2D5.entities.Dipendenti;
+import com.example.ASO525U5W2D5.entities.Prenotazioni;
 import com.example.ASO525U5W2D5.exceptions.ValidationException;
-import com.example.ASO525U5W2D5.payloads.DipendenteDTO;
-import com.example.ASO525U5W2D5.services.DipendentiService;
+import com.example.ASO525U5W2D5.payloads.PrenotazioneDTO;
+import com.example.ASO525U5W2D5.services.PrenotazioniService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
@@ -13,18 +13,18 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/dipendenti")
-public class DipendentiController {
-    private final DipendentiService dipendentiService;
+@RequestMapping("/prenotazioni")
+public class PrenotazioniController {
+    private final PrenotazioniService prenotazioniService;
 
     @Autowired
-    public DipendentiController(DipendentiService dipendentiService) {
-        this.dipendentiService = dipendentiService;
+    public PrenotazioniController(PrenotazioniService prenotazioniService) {
+        this.prenotazioniService = prenotazioniService;
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Dipendenti createDipendente(@RequestBody @Validated DipendenteDTO payload, BindingResult validationResult) {
+    public Prenotazioni createPrenotazioni(@RequestBody @Validated PrenotazioneDTO payload, BindingResult validationResult) {
         if (validationResult.hasErrors()) {
             List<String> errorsList = validationResult.getFieldErrors()
                     .stream()
@@ -33,14 +33,8 @@ public class DipendentiController {
 
             throw new ValidationException(errorsList);
         } else {
-            return this.dipendentiService.save(payload);
+            return this.prenotazioniService.save(payload);
         }
 
-    }
-    
-    @DeleteMapping("/{userId}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void findByIdAndDelete(@PathVariable long userId) {
-        this.dipendentiService.findByIdAndDelete(userId);
     }
 }

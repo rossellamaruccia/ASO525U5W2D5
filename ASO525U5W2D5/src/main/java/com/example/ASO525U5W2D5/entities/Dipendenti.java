@@ -5,11 +5,15 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Entity
 @Table(name = "dipendenti")
 @Getter
 @Setter
 public class Dipendenti {
+    @OneToMany(mappedBy = "dipendente")
+    private List<Prenotazioni> listaPrenotazioni;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Setter(AccessLevel.NONE)
