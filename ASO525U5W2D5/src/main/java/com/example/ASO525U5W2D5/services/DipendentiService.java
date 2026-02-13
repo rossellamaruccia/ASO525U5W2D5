@@ -9,6 +9,10 @@ import com.example.ASO525U5W2D5.payloads.DipendenteDTO;
 import com.example.ASO525U5W2D5.repositories.DipendentiRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -74,5 +78,13 @@ public class DipendentiService {
             }
         } else throw new NotFoundException(id);
 
+    }
+
+    public Page<Dipendenti> findAll(int page, int size, String orderBy, String sortCriteria) {
+        if (size > 100 || size < 0) size = 10;
+        if (page < 0) page = 0;
+        Pageable pageable = PageRequest.of(page, size,
+                sortCriteria.equals("desc") ? Sort.by(orderBy).descending() : Sort.by(orderBy));
+        return this.dipendentiRepository.findAll(pageable);
     }
 }

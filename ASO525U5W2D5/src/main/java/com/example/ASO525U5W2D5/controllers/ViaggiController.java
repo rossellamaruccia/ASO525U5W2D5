@@ -6,6 +6,7 @@ import com.example.ASO525U5W2D5.payloads.ViaggioDTO;
 import com.example.ASO525U5W2D5.services.ViaggiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -38,9 +39,23 @@ public class ViaggiController {
         }
     }
 
+    @GetMapping
+    public Page<Viaggi> getAll(@RequestParam(defaultValue = "0") int page,
+                               @RequestParam(defaultValue = "10") int size,
+                               @RequestParam(defaultValue = "data") String orderBy,
+                               @RequestParam(defaultValue = "asc") String sortCriteria) {
+        return this.viaggiService.findAll(page, size, orderBy, sortCriteria);
+    }
+
     @PutMapping("/{viaggioId}")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public Viaggi findByIdAndUpdate(@PathVariable long viaggioId, @RequestBody ViaggioDTO payload) {
         return this.viaggiService.findByIdAndUpdate(viaggioId, payload);
+    }
+
+    @DeleteMapping("/{viaggioId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void findByIdAndDelete(@PathVariable long dipendenteId) {
+        this.viaggiService.findByIdAndDelete(dipendenteId);
     }
 }

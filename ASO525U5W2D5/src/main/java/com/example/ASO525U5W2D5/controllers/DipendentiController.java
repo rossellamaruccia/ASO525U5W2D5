@@ -5,6 +5,7 @@ import com.example.ASO525U5W2D5.exceptions.ValidationException;
 import com.example.ASO525U5W2D5.payloads.DipendenteDTO;
 import com.example.ASO525U5W2D5.services.DipendentiService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -39,14 +40,22 @@ public class DipendentiController {
 
     }
 
+    @GetMapping
+    public Page<Dipendenti> getAll(@RequestParam(defaultValue = "0") int page,
+                                   @RequestParam(defaultValue = "10") int size,
+                                   @RequestParam(defaultValue = "data") String orderBy,
+                                   @RequestParam(defaultValue = "asc") String sortCriteria) {
+        return this.dipendentiService.findAll(page, size, orderBy, sortCriteria);
+    }
+
     @PatchMapping("/{dipendenteId}/avatar")
     public void uploadImage(@RequestParam("profile_pic") MultipartFile file, @PathVariable long dipendenteId) {
         this.dipendentiService.uploadAvatar(file, dipendenteId);
     }
 
-    @DeleteMapping("/{userId}")
+    @DeleteMapping("/{dipendenteId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void findByIdAndDelete(@PathVariable long userId) {
-        this.dipendentiService.findByIdAndDelete(userId);
+    public void findByIdAndDelete(@PathVariable long dipendenteId) {
+        this.dipendentiService.findByIdAndDelete(dipendenteId);
     }
 }
