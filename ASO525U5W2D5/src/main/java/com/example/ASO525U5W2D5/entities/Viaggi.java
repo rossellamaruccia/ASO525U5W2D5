@@ -13,7 +13,7 @@ import java.util.List;
 @Getter
 @Setter
 public class Viaggi {
-    @ManyToOne
+    @OneToMany(mappedBy = "viaggio")
     List<Prenotazioni> prenotazioni;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

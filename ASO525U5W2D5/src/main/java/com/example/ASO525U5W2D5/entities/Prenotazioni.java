@@ -14,9 +14,9 @@ public class Prenotazioni {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Setter(AccessLevel.NONE)
     private long id;
-    @OneToMany
+    @ManyToOne
     private Dipendenti dipendente;
-    @OneToMany
+    @ManyToOne
     private Viaggi viaggio;
     private String preferenze;
 

@@ -12,7 +12,7 @@ import java.util.List;
 @Getter
 @Setter
 public class Dipendenti {
-    @ManyToOne
+    @OneToMany(mappedBy = "dipendente")
     List<Prenotazioni> prenotazioni;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
