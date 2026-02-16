@@ -1,18 +1,12 @@
 package com.example.ASO525U5W2D5.controllers;
 
 import com.example.ASO525U5W2D5.entities.Dipendenti;
-import com.example.ASO525U5W2D5.exceptions.ValidationException;
-import com.example.ASO525U5W2D5.payloads.DipendenteDTO;
 import com.example.ASO525U5W2D5.services.DipendentiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/dipendenti")
@@ -24,21 +18,7 @@ public class DipendentiController {
         this.dipendentiService = dipendentiService;
     }
 
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public Dipendenti createDipendente(@RequestBody @Validated DipendenteDTO payload, BindingResult validationResult) {
-        if (validationResult.hasErrors()) {
-            List<String> errorsList = validationResult.getFieldErrors()
-                    .stream()
-                    .map(fieldError -> fieldError.getDefaultMessage())
-                    .toList();
-
-            throw new ValidationException(errorsList);
-        } else {
-            return this.dipendentiService.save(payload);
-        }
-
-    }
+    //il post con cui creo un nuovo Dipendente ora è nell'AuthController con endpoint /auth/register perché altrimenti con l'endpoint di questo controller la request avrebbe bisogno del token
 
     @GetMapping
     public Page<Dipendenti> getAll(@RequestParam(defaultValue = "0") int page,

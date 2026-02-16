@@ -6,4 +6,8 @@ public class NotFoundException extends RuntimeException {
                 "Could not find element with id" + id
         );
     }
+
+    public NotFoundException(String message) {
+        super(message);
+    }
 }

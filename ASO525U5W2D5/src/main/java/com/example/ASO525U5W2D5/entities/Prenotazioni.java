@@ -1,5 +1,6 @@
 package com.example.ASO525U5W2D5.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -14,6 +15,7 @@ public class Prenotazioni {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Setter(AccessLevel.NONE)
     private long id;
+    @JsonBackReference
     @ManyToOne
     private Dipendenti dipendente;
     @ManyToOne

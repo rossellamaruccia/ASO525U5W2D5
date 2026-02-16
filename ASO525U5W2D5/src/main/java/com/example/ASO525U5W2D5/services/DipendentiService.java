@@ -38,7 +38,8 @@ public class DipendentiService {
             throw new BadRequestException("L'email " + payload.email() + " è già in uso!");
         });
 
-        Dipendenti newDipendente = new Dipendenti(payload.username(), payload.name(), payload.surname(), payload.email());
+        Dipendenti newDipendente = new Dipendenti(payload.username(), payload.name(), payload.surname(), payload.email(), payload.password());
+        //la funzione save adesso include la PW
         dipendentiRepository.save(newDipendente);
 
         log.info("Nuovo Dipendente creato");
@@ -86,5 +87,9 @@ public class DipendentiService {
         Pageable pageable = PageRequest.of(page, size,
                 sortCriteria.equals("desc") ? Sort.by(orderBy).descending() : Sort.by(orderBy));
         return this.dipendentiRepository.findAll(pageable);
+    }
+
+    public Dipendenti findByEmail(String email) {
+        return this.dipendentiRepository.findByEmail(email).orElseThrow(() -> new NotFoundException("Il dipendente con email" + email + "non è stato trovato."));
     }
 }

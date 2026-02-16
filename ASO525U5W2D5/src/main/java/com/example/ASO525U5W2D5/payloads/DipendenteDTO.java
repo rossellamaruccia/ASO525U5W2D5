@@ -15,6 +15,10 @@ public record DipendenteDTO(
         @NotBlank(message = "email is a required field")
         @Email(message = "wrong format")
         String email,
+        @NotBlank
+        //TODO: aggiungere validazione regex x pw
+        String password,
         String avatar_url) {
-
 }
+
+//DTO per la registrazione del dipendente, deve includere ora una PW
