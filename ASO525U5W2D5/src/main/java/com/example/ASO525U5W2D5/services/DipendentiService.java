@@ -6,6 +6,7 @@ import com.example.ASO525U5W2D5.entities.Dipendenti;
 import com.example.ASO525U5W2D5.exceptions.BadRequestException;
 import com.example.ASO525U5W2D5.exceptions.NotFoundException;
 import com.example.ASO525U5W2D5.payloads.DipendenteDTO;
+import com.example.ASO525U5W2D5.payloads.ModificaDipendenteDTO;
 import com.example.ASO525U5W2D5.repositories.DipendentiRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -25,11 +27,13 @@ import java.util.Optional;
 public class DipendentiService {
     private final Cloudinary cloudinaryUploader;
     private DipendentiRepository dipendentiRepository;
+    private PasswordEncoder bcrypt;
 
     @Autowired
-    public DipendentiService(DipendentiRepository dipendentiRepository, Cloudinary cloudinaryUploader) {
+    public DipendentiService(DipendentiRepository dipendentiRepository, Cloudinary cloudinaryUploader, PasswordEncoder bcrypt) {
         this.dipendentiRepository = dipendentiRepository;
         this.cloudinaryUploader = cloudinaryUploader;
+        this.bcrypt = bcrypt;
     }
 
     public Dipendenti save(DipendenteDTO payload) {
@@ -38,7 +42,7 @@ public class DipendentiService {
             throw new BadRequestException("L'email " + payload.email() + " è già in uso!");
         });
 
-        Dipendenti newDipendente = new Dipendenti(payload.username(), payload.name(), payload.surname(), payload.email(), payload.password());
+        Dipendenti newDipendente = new Dipendenti(payload.username(), payload.name(), payload.surname(), payload.email(), bcrypt.encode(payload.password()));
         //la funzione save adesso include la PW
         dipendentiRepository.save(newDipendente);
 
@@ -91,5 +95,19 @@ public class DipendentiService {
 
     public Dipendenti findByEmail(String email) {
         return this.dipendentiRepository.findByEmail(email).orElseThrow(() -> new NotFoundException("Il dipendente con email" + email + "non è stato trovato."));
+    }
+
+    public Dipendenti findAndModify(long id, ModificaDipendenteDTO payload) {
+        Optional optional = this.dipendentiRepository.findById(id);
+        if (optional.isPresent()) {
+            Dipendenti dipendente = (Dipendenti) optional.get();
+            dipendente.setUsername(payload.username());
+            dipendente.setName(payload.name());
+            dipendente.setSurname(payload.surname());
+            dipendente.setPassword(bcrypt.encode(payload.password()));
+            dipendente.setEmail(payload.email());
+            dipendentiRepository.save(dipendente);
+            return dipendente;
+        } else throw new NotFoundException(id);
     }
 }

@@ -1,11 +1,16 @@
 package com.example.ASO525U5W2D5.security;
 
+import com.example.ASO525U5W2D5.entities.Dipendenti;
 import com.example.ASO525U5W2D5.exceptions.UnauthorizedException;
+import com.example.ASO525U5W2D5.services.DipendentiService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -15,10 +20,12 @@ import java.io.IOException;
 @Component
 public class JWTCheckerFilter extends OncePerRequestFilter {
     private final JWTTools jwtTools;
+    private DipendentiService dipendentiService;
 
     @Autowired
-    public JWTCheckerFilter(JWTTools jwtTools) {
+    public JWTCheckerFilter(JWTTools jwtTools, DipendentiService dipendentiService) {
         this.jwtTools = jwtTools;
+        this.dipendentiService = dipendentiService;
     }
 
     @Override
@@ -28,7 +35,16 @@ public class JWTCheckerFilter extends OncePerRequestFilter {
             throw new UnauthorizedException("Inserisci la tua authorization key");
         String accessToken = authHeader.replace("Bearer ", "");
         jwtTools.verifyToken(accessToken);
+
+        // verifica authorization
+
+        Dipendenti authDipendente = this.dipendentiService.findById(jwtTools.getId(accessToken));
+        Authentication authentication = new UsernamePasswordAuthenticationToken(authDipendente, null, authDipendente.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        //-------------------------------------
         filterChain.doFilter(request, response);
+
+
     }
 
     @Override

@@ -26,6 +26,7 @@ public class AuthController {
         this.authService = authService;
         this.dipendentiService = dipendentiService;
     }
+    
 
     @PostMapping("/login")
     public LoginResponseDTO login(@RequestBody LoginDTO body) {

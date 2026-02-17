@@ -32,4 +32,13 @@ public class JWTTools {
             throw new UnauthorizedException("Qualcosa è andato storto. Prova di nuovo");
         }
     }
+
+    //estrarre l'id dal token
+    public long getId(String token) {
+        try {
+            return Long.parseLong(Jwts.parser().verifyWith(Keys.hmacShaKeyFor(secret.getBytes())).build().parseSignedClaims(token).getPayload().getSubject());
+        } catch (Exception ex) {
+            throw new UnauthorizedException("Qualcosa è andato storto. Prova di nuovo");
+        }
+    }
 }
