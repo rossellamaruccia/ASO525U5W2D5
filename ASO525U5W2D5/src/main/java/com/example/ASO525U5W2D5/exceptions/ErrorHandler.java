@@ -29,4 +29,23 @@ public class ErrorHandler {
     public ErrorsDTO handleForbidden(AuthorizationDeniedException ex) {
         return new ErrorsDTO("Non hai i permessi per accedere!", LocalDateTime.now());
     }
+
+    @ExceptionHandler(BadRequestException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorsDTO handleBadRequest(BadRequestException ex) {
+        return new ErrorsDTO(ex.getMessage(), LocalDateTime.now());
+    }
+
+    @ExceptionHandler(NotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND) // 404
+    public ErrorsDTO handleNotFound(NotFoundException ex) {
+        return new ErrorsDTO(ex.getMessage(), LocalDateTime.now());
+    }
+
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR) // 500
+    public ErrorsDTO handleGenericServerError(Exception ex) {
+        ex.printStackTrace();
+        return new ErrorsDTO("C'è stato un errore, giuro che lo risolveremo presto!", LocalDateTime.now());
+    }
 }
